@@ -10,16 +10,26 @@ from functools import reduce
 factory = APIClient()
 
 class ModelTest(object):
-    rev_name = None
+    rev_name_listview = None
+    rev_name_single = None
     model = None
     data = None
     expected_str = None
 
-    '''test GET request'''
-    def test_get(self):
-        url = reverse(self.rev_name)
+    '''test GET request for list'''
+    def test_get_list(self):
+        url = reverse(self.rev_name_listview)
         response = factory.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK) #test GET
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    '''test GET request for single object'''
+    def test_get_single(self):
+        url = reverse(self.rev_name_single, kwargs={'pk': 1})
+        obj = self.model.objects.create(**self.data)
+        obj.save()
+        response = factory.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK) 
+
     
     '''check if objects are instances of models'''
     def test_model(self):   
@@ -54,7 +64,8 @@ class SerializerTest(object):
 
 
 class UserEntryTest(APITestCase, ModelTest):
-    rev_name = 'user_entries'
+    rev_name_listview = 'user_entries'
+    rev_name_single = 'user_entry'
     model = UserEntry
     data = { 'zip': '22-222', 'email': 'test@test.com', 'name': 'John Smith' }
     expected_str = '22-222'
@@ -84,6 +95,7 @@ class UserEntryTest(APITestCase, ModelTest):
         bad_email = self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST) 
         response = factory.post(url, { 'zip': '62-912', 'name': 'Tomek123', 'email': 'test3@test3.com' })
         bad_name = self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST) 
+
     
     '''check if data has proper formats'''
     def test_data_formats(self):
@@ -98,7 +110,8 @@ class UserEntryTest(APITestCase, ModelTest):
         self.assertRaises(IntegrityError)
 
 class ZipCodeCounterTest(APITestCase, ModelTest):
-    rev_name = 'zip_code_counter'
+    rev_name_listview = 'zip_code_counters'
+    rev_name_single = 'zip_code_counter'
     model = ZipCodeCounter
     data = { 'zip_code': '22-222', 'counter': 5}
     expected_str = '22-222: 5'
@@ -134,8 +147,11 @@ class TestURLS(APITestCase):
         user_entry_create = reverse('user_entry_create')
         self.assertEqual(user_entry_create, '/api/entries/create/')
         
-        zip_code_counter = reverse('zip_code_counter')
-        self.assertEqual(zip_code_counter, '/api/zipcodecounter/')
+        zip_code_counter = reverse('zip_code_counters')
+        self.assertEqual(zip_code_counter, '/api/counters/')
 
         user_entries = reverse('user_entries')
         self.assertEqual(user_entries, '/api/entries/')
+
+        
+
