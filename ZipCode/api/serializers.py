@@ -10,3 +10,10 @@ class ZipCodeCounterSerializer(serializers.ModelSerializer):
     class Meta:
         model = ZipCodeCounter
         fields = '__all__'
+        extra_field_kwargs = {
+            'url':
+            {
+                'lookup_field': 'zip_code'
+            }
+        }
+       

@@ -23,5 +23,5 @@ class ZipCodeCounters(generics.ListAPIView):
 class ZipCodeCounter(generics.RetrieveAPIView):
     queryset = ZipCodeCounter.objects.all()
     serializer_class = ZipCodeCounterSerializer
-
+    lookup_field = 'zip_code'
 
