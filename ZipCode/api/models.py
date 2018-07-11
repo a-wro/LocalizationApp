@@ -10,7 +10,7 @@ class UserEntry(models.Model):
     date = models.DateField(auto_now_add=True)
     zip = models.CharField(max_length=6, validators=[RegexValidator(r'^[0-9]{2}-[0-9]{3}$', message='Zip code has format xx-xxx')])
     email = models.EmailField(unique=True) #EmailValidator
-    name = models.CharField(max_length=50, validators=[RegexValidator(r'^[a-zA-Z ]*$', message='Enter letters and/or spaces')])
+    name = models.CharField(max_length=50, validators=[RegexValidator(r'^([^\d!@#$%^&*])+$', message='Enter letters and/or spaces')])
 
     def __str__(self):
         return self.zip
@@ -18,7 +18,7 @@ class UserEntry(models.Model):
     
 
     #override
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):    
         super(UserEntry, self).save(*args, **kwargs)
         try: 
             query = ZipCodeCounter.objects.get(zip_code=self.zip)

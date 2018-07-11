@@ -67,7 +67,7 @@ class UserEntryTest(APITestCase, ModelTest):
     rev_name_listview = 'user_entries'
     rev_name_single = 'user_entry'
     model = UserEntry
-    data = { 'zip': '22-222', 'email': 'test@test.com', 'name': 'John Smith' }
+    data = { 'zip': '22-222', 'email': 'test@test.com', 'name': 'Lukasz' }
     expected_str = '22-222'
 
     def test_post(self):
