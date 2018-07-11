@@ -23,5 +23,5 @@ the endpoints are:
 /api/entries/
 /api/entry/create/
 /api/counters/
-/api/counter/{id}/
+/api/counter/{zipcode}/
 ```
