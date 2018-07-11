@@ -9,7 +9,7 @@ from functools import reduce
 
 factory = APIClient()
 
-class ModelTest(object):
+class ModelTest:
     rev_name_listview = None
     rev_name_single = None
     model = None
@@ -43,7 +43,7 @@ class ModelTest(object):
         self.assertEqual(str(_model), self.expected_str)
 
 
-class SerializerTest(object):
+class SerializerTest:
     #don't test because we have None objects
     serializer = None
     model = None
