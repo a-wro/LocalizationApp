@@ -13,3 +13,15 @@ cd LocalizationApp/ZipCode
 pip install -r requirements.txt  
 python3 manage.py runserver  
 ``` 
+
+If port is taken run with:
+``` python3 manage.py runserver localhost:8888 ``` 
+(or any other free port)
+
+the endpoints are:
+```
+/api/entries/
+/api/entry/create/
+/api/counters/
+/api/counter/{id}/
+```
