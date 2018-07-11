@@ -15,6 +15,8 @@ class ModelTest:
     model = None
     data = None
     expected_str = None
+    rev_key = None
+    rev_arg = None
 
     '''test GET request for list'''
     def test_get_list(self):
@@ -24,7 +26,7 @@ class ModelTest:
 
     '''test GET request for single object'''
     def test_get_single(self):
-        url = reverse(self.rev_name_single, kwargs={'pk': 1})
+        url = reverse(self.rev_name_single, kwargs={self.rev_key: self.rev_arg})
         obj = self.model.objects.create(**self.data)
         obj.save()
         response = factory.get(url)
@@ -69,6 +71,8 @@ class UserEntryTest(APITestCase, ModelTest):
     model = UserEntry
     data = { 'zip': '22-222', 'email': 'test@test.com', 'name': 'Lukasz' }
     expected_str = '22-222'
+    rev_arg = 1
+    rev_key = 'pk'
 
     def test_post(self):
         '''test POST Request'''
@@ -115,6 +119,8 @@ class ZipCodeCounterTest(APITestCase, ModelTest):
     model = ZipCodeCounter
     data = { 'zip_code': '22-222', 'counter': 5}
     expected_str = '22-222: 5'
+    rev_key = 'zip_code'
+    rev_arg = '22-222'
     
     '''check if the counter increments properly upon adding a unique zip code'''
     def test_increment(self):
